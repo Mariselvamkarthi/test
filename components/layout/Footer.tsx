@@ -13,7 +13,7 @@ export function Footer() {
           <div className="flex items-center gap-6">
             <a
               href={SOCIAL_LINKS.linkedin}
-              target="_blank"
+              target="https://www.linkedin.com/in/mariselvam-mariappan/"
               rel="noopener noreferrer"
               className="text-xs text-muted-foreground hover:text-foreground transition-opacity duration-200 hover:opacity-80"
               aria-label="LinkedIn"
@@ -22,7 +22,7 @@ export function Footer() {
             </a>
             <a
               href={SOCIAL_LINKS.behance}
-              target="_blank"
+              target="https://www.behance.net/mariselvamkarthi"
               rel="noopener noreferrer"
               className="text-xs text-muted-foreground hover:text-foreground transition-opacity duration-200 hover:opacity-80"
               aria-label="Behance"

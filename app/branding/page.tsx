@@ -1,228 +1,164 @@
 "use client";
 
+import React, { useState } from "react";
+import dynamic from "next/dynamic";
 import { motion } from "framer-motion";
-import { ImagePlaceholder } from "@/components/ui/ImagePlaceholder";
+import { Palette, FileText, Layout, ChevronRight, Rotate3d } from "lucide-react";
+import { cn } from "@/lib/utils";
 import { scrollReveal } from "@/lib/motion";
 
+const BookSlider = dynamic(
+  () => import("@/components/branding/BookSlider/Scene").then((mod) => ({ default: mod.BookSlider })),
+  { ssr: false }
+);
+
+interface BrandManual {
+  id: string;
+  title: string;
+  description: string;
+  images: string[];
+}
+
+const BRAND_MANUALS: BrandManual[] = [
+  {
+    id: "belema",
+    title: "Belema Fintech",
+    description: "Retail Fintech identity focusing on trust and clarity.",
+    images: [
+      "/branding-images/belema/cover.jpg",
+      "/branding-images/belema/intro.jpg",
+      "/branding-images/belema/overview.jpg",
+      "/branding-images/belema/typography.jpg",
+      "/branding-images/belema/color.jpg",
+      "/branding-images/belema/logo.jpg",
+      "/branding-images/belema/back.jpg",
+    ],
+  },
+  {
+    id: "sensei",
+    title: "Sensei SIGMA",
+    description: "Options trading system balancing complexity with guidance.",
+    images: [
+      "/branding-images/sensei/cover.jpg",
+      "/branding-images/sensei/intro.jpg",
+      "/branding-images/sensei/overview.jpg",
+      "/branding-images/sensei/typography.jpg",
+      "/branding-images/sensei/color.jpg",
+      "/branding-images/sensei/back.jpg",
+    ],
+  },
+  {
+    id: "girmiti",
+    title: "Girmiti Corporate",
+    description: "Enterprise identity standards for internal platforms.",
+    images: [
+      "/branding-images/girmiti/cover.jpg",
+      "/branding-images/girmiti/intro.jpg",
+      "/branding-images/girmiti/overview.jpg",
+      "/branding-images/girmiti/back.jpg",
+    ],
+  },
+];
+
 export default function Branding() {
+  const [selectedManual, setSelectedManual] = useState<BrandManual>(BRAND_MANUALS[0]);
+
   return (
-    <div className="container mx-auto px-4 sm:px-6 md:px-8 lg:px-12 py-12 sm:py-16 md:py-24">
-      {/* Header */}
+    <div className="container mx-auto px-4 sm:px-6 md:px-8 lg:px-12 py-8 sm:py-12 md:py-24">
+
+      {/* Page Header - Compact */}
       <motion.header
         initial={scrollReveal.hidden}
         animate={scrollReveal.visible}
-        className="mb-12 sm:mb-16 md:mb-20"
+        className="mb-10 sm:mb-16 max-w-3xl"
       >
-        <div className="max-w-4xl">
-          <h1 className="text-display-xl mb-4 sm:mb-6">Branding & Visual Systems</h1>
-          <p className="text-base sm:text-lg md:text-xl text-muted-foreground leading-relaxed">
-            I design brand systems that support product clarity, trust, and consistency across digital platforms.
-          </p>
-        </div>
+        <h1 className="text-display-lg mb-4">Brand Systems & Identity</h1>
+        <p className="text-lg text-muted-foreground leading-relaxed">
+          Scalable design systems expressed through interactive 3D documentation.
+        </p>
       </motion.header>
 
-      <div className="max-w-4xl space-y-16 sm:space-y-20 md:space-y-24">
-        {/* Belema Fintech — Brand System */}
-        <motion.section
-          initial={scrollReveal.hidden}
-          whileInView={scrollReveal.visible}
-          viewport={{ once: true, margin: "-100px" }}
-          className="scroll-mt-20"
-        >
-          <div className="mb-6 sm:mb-8">
-            <h2 className="text-display-lg mb-2">Belema Fintech — Brand System</h2>
-            <p className="text-sm sm:text-base text-muted-foreground uppercase tracking-wider">
-              Retail Fintech / Mobile Banking
-            </p>
-          </div>
+      {/* Main Layout: 35% Selector / 65% Viewer */}
+      <motion.div
+        initial={scrollReveal.hidden}
+        whileInView={scrollReveal.visible}
+        viewport={{ once: true, margin: "-50px" }}
+        className="grid grid-cols-1 lg:grid-cols-[35%_65%] gap-8 lg:gap-16 items-start"
+      >
 
-          <div className="space-y-6 sm:space-y-8">
-            <div>
-              <h3 className="text-display-sm mb-3 text-foreground font-semibold">Context</h3>
-              <p className="text-base leading-relaxed text-muted-foreground">
-                Belema is a retail fintech product where trust and clarity are critical for user adoption.
-              </p>
+        {/* Left Column: Selector & Context */}
+        <div className="space-y-8 order-2 lg:order-1 lg:sticky lg:top-24">
+
+          {/* Brand Selector */}
+          <div className="space-y-3">
+            <div className="flex items-center justify-between">
+              <label className="text-xs font-bold uppercase tracking-widest text-muted-foreground">Select Project</label>
             </div>
-
-            <div>
-              <h3 className="text-display-sm mb-3 text-foreground font-semibold">Problem</h3>
-              <p className="text-base leading-relaxed text-muted-foreground">
-                The brand needed to feel reliable, approachable, and suitable for everyday banking,
-                while also working consistently across mobile UI and marketing materials.
-              </p>
-            </div>
-
-            <div>
-              <h3 className="text-display-sm mb-3 text-foreground font-semibold">Brand Decisions</h3>
-              <ul className="list-disc list-inside space-y-2 ml-4 text-base leading-relaxed text-muted-foreground">
-                <li>Calm, trustworthy color palette</li>
-                <li>Simple, readable typography</li>
-                <li>Minimal visual noise to support usability</li>
-                <li>Branding aligned closely with mobile UI patterns</li>
-              </ul>
-            </div>
-
-            <div>
-              <h3 className="text-display-sm mb-3 text-foreground font-semibold">System Usage</h3>
-              <ul className="list-disc list-inside space-y-2 ml-4 text-base leading-relaxed text-muted-foreground">
-                <li>Mobile banking application UI</li>
-                <li>App icons and splash screens</li>
-                <li>Marketing and communication assets</li>
-              </ul>
-            </div>
-
-            <div>
-              <h3 className="text-display-sm mb-3 text-foreground font-semibold">Outcome</h3>
-              <p className="text-base leading-relaxed text-muted-foreground">
-                The brand system supported user trust and ensured consistency across product and communication touchpoints.
-              </p>
-            </div>
-
-            {/* Optional Image Placeholder */}
-            <div className="mt-8 sm:mt-12">
-              <ImagePlaceholder
-                label="Brand System Preview"
-                aspectRatio="16:9"
-                size="large"
-              />
+            <div className="flex flex-col gap-2">
+              {BRAND_MANUALS.map((manual) => (
+                <button
+                  key={manual.id}
+                  onClick={() => setSelectedManual(manual)}
+                  className={cn(
+                    "group text-left p-4 rounded-xl border transition-all duration-200 relative overflow-hidden",
+                    selectedManual.id === manual.id
+                      ? "bg-foreground text-background border-foreground shadow-lg scale-[1.02]"
+                      : "bg-white dark:bg-neutral-900 text-foreground border-neutral-200 dark:border-neutral-800 hover:border-neutral-400 dark:hover:border-neutral-700"
+                  )}
+                >
+                  <div className="flex justify-between items-center relative z-10">
+                    <span className="font-semibold text-sm">{manual.title}</span>
+                    {selectedManual.id === manual.id && (
+                      <ChevronRight className="w-4 h-4" />
+                    )}
+                  </div>
+                  <p className={cn(
+                    "text-xs mt-1.5 line-clamp-2 transition-colors",
+                    selectedManual.id === manual.id ? "text-neutral-300" : "text-muted-foreground"
+                  )}>
+                    {manual.description}
+                  </p>
+                </button>
+              ))}
             </div>
           </div>
-        </motion.section>
 
-        {/* Sensei SIGMA — Product Brand Identity */}
-        <motion.section
-          initial={scrollReveal.hidden}
-          whileInView={scrollReveal.visible}
-          viewport={{ once: true, margin: "-100px" }}
-          className="scroll-mt-20"
-        >
-          <div className="mb-6 sm:mb-8">
-            <h2 className="text-display-lg mb-2">Sensei SIGMA — Product Brand Identity</h2>
-            <p className="text-sm sm:text-base text-muted-foreground uppercase tracking-wider">
-              Options Trading / Fintech
-            </p>
+          {/* System Components (Compact) */}
+          <div className="p-6 rounded-2xl bg-neutral-50 dark:bg-neutral-900/50 border border-neutral-100 dark:border-neutral-800 space-y-4">
+            <h3 className="text-sm font-semibold text-foreground uppercase tracking-wider mb-2">
+              System Components
+            </h3>
+            <ul className="space-y-3">
+              <li className="flex gap-3 items-center">
+                <Palette className="w-4 h-4 text-neutral-500" />
+                <span className="text-sm text-muted-foreground">Semantic Color Palettes</span>
+              </li>
+              <li className="flex gap-3 items-center">
+                <FileText className="w-4 h-4 text-neutral-500" />
+                <span className="text-sm text-muted-foreground">Typography & Hierarchy</span>
+              </li>
+              <li className="flex gap-3 items-center">
+                <Layout className="w-4 h-4 text-neutral-500" />
+                <span className="text-sm text-muted-foreground">Grid & Spacer Systems</span>
+              </li>
+            </ul>
           </div>
 
-          <div className="space-y-6 sm:space-y-8">
-            <div>
-              <h3 className="text-display-sm mb-3 text-foreground font-semibold">Context</h3>
-              <p className="text-base leading-relaxed text-muted-foreground">
-                Sensei SIGMA is an options trading product aimed at simplifying a complex domain.
-              </p>
-            </div>
+        </div>
 
-            <div>
-              <h3 className="text-display-sm mb-3 text-foreground font-semibold">Problem</h3>
-              <p className="text-base leading-relaxed text-muted-foreground">
-                The brand needed to communicate intelligence, guidance, and confidence
-                without intimidating new users.
-              </p>
-            </div>
-
-            <div>
-              <h3 className="text-display-sm mb-3 text-foreground font-semibold">Brand Decisions</h3>
-              <ul className="list-disc list-inside space-y-2 ml-4 text-base leading-relaxed text-muted-foreground">
-                <li>Strong, focused visual identity</li>
-                <li>Balanced use of contrast to highlight key actions</li>
-                <li>Branding integrated tightly with UX patterns</li>
-                <li>Visual tone aligned with "Making Complex Simple"</li>
-              </ul>
-            </div>
-
-            <div>
-              <h3 className="text-display-sm mb-3 text-foreground font-semibold">System Usage</h3>
-              <ul className="list-disc list-inside space-y-2 ml-4 text-base leading-relaxed text-muted-foreground">
-                <li>Trading dashboards</li>
-                <li>Recommendation cards</li>
-                <li>Gamified challenge features</li>
-                <li>Product presentations</li>
-              </ul>
-            </div>
-
-            <div>
-              <h3 className="text-display-sm mb-3 text-foreground font-semibold">Outcome</h3>
-              <p className="text-base leading-relaxed text-muted-foreground">
-                The brand reinforced the product's positioning as a guided, clarity-driven trading platform.
-              </p>
-            </div>
-
-            {/* Optional Image Placeholder */}
-            <div className="mt-8 sm:mt-12">
-              <ImagePlaceholder
-                label="UI + Brand Integration Example"
-                aspectRatio="16:9"
-                size="large"
-              />
-            </div>
-          </div>
-        </motion.section>
-
-        {/* Girmiti — Corporate & Internal Branding */}
-        <motion.section
-          initial={scrollReveal.hidden}
-          whileInView={scrollReveal.visible}
-          viewport={{ once: true, margin: "-100px" }}
-          className="scroll-mt-20"
-        >
-          <div className="mb-6 sm:mb-8">
-            <h2 className="text-display-lg mb-2">Girmiti — Corporate & Internal Branding</h2>
-            <p className="text-sm sm:text-base text-muted-foreground uppercase tracking-wider">
-              Corporate / Internal Platforms
-            </p>
+        {/* Right Column: 3D Viewer (ISOLATED IFRAME) */}
+        <div className="relative order-1 lg:order-2 w-full perspective-1000 h-[600px] lg:h-[700px]">
+          <div className="w-full h-full bg-neutral-100 dark:bg-neutral-900/50 rounded-xl overflow-hidden border border-neutral-200 dark:border-neutral-800 relative z-10 group">
+            <BookSlider images={selectedManual.images} />
           </div>
 
-          <div className="space-y-6 sm:space-y-8">
-            <div>
-              <h3 className="text-display-sm mb-3 text-foreground font-semibold">Context</h3>
-              <p className="text-base leading-relaxed text-muted-foreground">
-                Branding was required for internal platforms, presentations, and communication materials.
-              </p>
-            </div>
-
-            <div>
-              <h3 className="text-display-sm mb-3 text-foreground font-semibold">Problem</h3>
-              <p className="text-base leading-relaxed text-muted-foreground">
-                Lack of standardization caused inconsistency across internal products and assets.
-              </p>
-            </div>
-
-            <div>
-              <h3 className="text-display-sm mb-3 text-foreground font-semibold">Brand Decisions</h3>
-              <ul className="list-disc list-inside space-y-2 ml-4 text-base leading-relaxed text-muted-foreground">
-                <li>Standardized color and typography usage</li>
-                <li>Consistent layout rules</li>
-                <li>Reusable visual components</li>
-              </ul>
-            </div>
-
-            <div>
-              <h3 className="text-display-sm mb-3 text-foreground font-semibold">System Usage</h3>
-              <ul className="list-disc list-inside space-y-2 ml-4 text-base leading-relaxed text-muted-foreground">
-                <li>Internal fintech platforms</li>
-                <li>Business presentations</li>
-                <li>Company communication assets</li>
-              </ul>
-            </div>
-
-            <div>
-              <h3 className="text-display-sm mb-3 text-foreground font-semibold">Outcome</h3>
-              <p className="text-base leading-relaxed text-muted-foreground">
-                Improved visual consistency, reduced design debt, and easier scalability across teams.
-              </p>
-            </div>
-
-            {/* Optional Image Placeholder */}
-            <div className="mt-8 sm:mt-12">
-              <ImagePlaceholder
-                label="Brand System Preview"
-                aspectRatio="16:9"
-                size="large"
-              />
-            </div>
+          <div className="mt-4 flex items-center justify-center gap-2 text-xs text-neutral-400 pb-8 lg:pb-0">
+            <Rotate3d className="w-3 h-3" />
+            <span>Interactive 3D — Drag to rotate, click to flip</span>
           </div>
-        </motion.section>
-      </div>
-    </div>
+        </div>
+
+      </motion.div >
+    </div >
   );
 }
-

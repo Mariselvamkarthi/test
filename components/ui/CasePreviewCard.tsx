@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
+import Image from "next/image";
 import { ImagePlaceholder } from "./ImagePlaceholder";
 import { scrollReveal, cardHover, arrowSlide } from "@/lib/motion";
 
@@ -38,16 +39,42 @@ export function CasePreviewCard({
           className="block h-full bg-card border border-border rounded-sm overflow-hidden hover:border-foreground/20 hover:shadow-lg transition-all duration-200"
         >
         <div className="flex flex-col h-full">
-          {/* Image Placeholder */}
-          <div className="relative overflow-hidden">
-            <ImagePlaceholder
-              label="UI Preview"
-              aspectRatio="16:9"
-              size="medium"
-              className="group-hover:scale-[1.02] transition-transform duration-300"
-            />
+          {/* Image */}
+          <div className="relative overflow-hidden aspect-video">
+            {slug === "sensei-sigma" ? (
+              <Image
+                src="/images/case-studies/sensei-sigma/Sensei App.png"
+                alt={`${title} - ${problem}`}
+                fill
+                className="object-cover group-hover:scale-[1.02] transition-transform duration-300"
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              />
+            ) : slug === "belema-fintech" ? (
+              <Image
+                src="/images/case-studies/sensei-sigma/Belema.png"
+                alt={`${title} - ${problem}`}
+                fill
+                className="object-cover group-hover:scale-[1.02] transition-transform duration-300"
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              />
+            ) : slug === "thalappakatti-uae" ? (
+              <Image
+                src="/images/case-studies/sensei-sigma/Thalappakatti.png"
+                alt={`${title} - ${problem}`}
+                fill
+                className="object-cover group-hover:scale-[1.02] transition-transform duration-300"
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              />
+            ) : (
+              <ImagePlaceholder
+                label="UI Preview"
+                aspectRatio="16:9"
+                size="medium"
+                className="group-hover:scale-[1.02] transition-transform duration-300"
+              />
+            )}
             {platform && (
-              <div className="absolute top-3 right-3">
+              <div className="absolute top-3 right-3 z-10">
                 <span className="text-xs px-2 py-1 bg-background/80 backdrop-blur-sm rounded text-muted-foreground uppercase tracking-wider">
                   {platform}
                 </span>

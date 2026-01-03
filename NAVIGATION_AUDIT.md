@@ -77,8 +77,8 @@ Links verified:
 ### 7. Contact Page (app/contact/page.tsx)
 External links verified:
 
-- ✅ **Email Link** → `mailto:contact@mariselvam.com`
-- ✅ **LinkedIn Link** → `https://linkedin.com/in/mariselvam`
+- ✅ **Email Link** → `mailto:mariselvamkarthi@gmail.com`
+- ✅ **LinkedIn Link** → `https://www.linkedin.com/in/mariselvam-mariappan/`
   - Opens in new tab (`target="_blank"`)
   - Has `rel="noopener noreferrer"` for security
 

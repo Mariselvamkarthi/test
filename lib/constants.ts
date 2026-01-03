@@ -8,8 +8,8 @@ export const SITE_CONFIG = {
   description: "Professional portfolio of Mariselvam - UI/UX Designer specializing in fintech and B2B product design.",
   url: process.env.NEXT_PUBLIC_SITE_URL || "https://mariselvam.com",
   author: "Mariselvam",
-  email: "contact@mariselvam.com",
-  linkedin: "https://linkedin.com/in/mariselvam",
+  email: "mariselvamkarthi@gmail.com",
+  linkedin: "https://www.linkedin.com/in/mariselvam-mariappan/",
 } as const;
 
 export type NavigationItem = {
@@ -28,7 +28,7 @@ export const NAVIGATION: readonly NavigationItem[] = [
 
 export const SOCIAL_LINKS = {
   linkedin: SITE_CONFIG.linkedin,
-  behance: "https://behance.net/mariselvam",
+  behance: "https://www.behance.net/mariselvamkarthi",
   email: `mailto:${SITE_CONFIG.email}`,
 } as const;
 

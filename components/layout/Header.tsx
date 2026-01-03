@@ -16,7 +16,7 @@ export function Header() {
           <div className="flex items-center">
             <Link
               href="/"
-              className="text-base sm:text-lg font-semibold tracking-tight text-foreground hover:text-primary transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-background rounded-sm min-h-[44px] min-w-[44px] flex items-center"
+              className="text-base sm:text-lg font-semibold tracking-tight text-foreground hover:text-primary transition-colors duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background rounded-sm min-h-[44px] min-w-[44px] flex items-center"
             >
               Mariselvam
             </Link>
@@ -26,31 +26,31 @@ export function Header() {
             {NAVIGATION.map((item) => {
               const isActive = pathname === item.href;
               return (
-                <motion.div
-                  key={item.name}
-                  whileHover={{ opacity: 0.8 }}
-                  transition={{ duration: 0.2, ease: [0.4, 0, 0.2, 1] }}
-                >
+                <div key={item.name} className="relative group">
                   <Link
                     href={item.href}
-                    className={`relative px-4 sm:px-5 py-2.5 text-sm font-medium tracking-wide transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-background rounded-sm min-h-[44px] flex items-center ${
-                      isActive
-                        ? "text-foreground"
-                        : "text-muted-foreground hover:text-foreground"
-                    }`}
+                    className={`px-4 sm:px-5 py-2.5 text-sm font-medium tracking-wide transition-colors duration-200 focus:outline-none rounded-sm min-h-[44px] flex items-center ${isActive
+                      ? "text-foreground"
+                      : "text-muted-foreground hover:text-foreground"
+                      }`}
                     aria-current={isActive ? "page" : undefined}
                   >
                     {item.name}
-                    {isActive && (
-                      <motion.div
-                        layoutId="activeTab"
-                        className="absolute inset-x-0 -bottom-px h-px bg-foreground"
-                        initial={false}
-                        transition={{ type: "spring", stiffness: 400, damping: 35 }}
-                      />
-                    )}
                   </Link>
-                </motion.div>
+                  {/* Hover Underline */}
+                  {!isActive && (
+                    <div className="absolute inset-x-4 sm:inset-x-5 bottom-2 h-px bg-foreground scale-x-0 group-hover:scale-x-100 transition-transform duration-200 origin-left" />
+                  )}
+                  {/* Active Underline */}
+                  {isActive && (
+                    <motion.div
+                      layoutId="activeTab"
+                      className="absolute inset-x-4 sm:inset-x-5 bottom-2 h-px bg-foreground"
+                      initial={false}
+                      transition={{ type: "spring", stiffness: 400, damping: 35 }}
+                    />
+                  )}
+                </div>
               );
             })}
           </div>
@@ -77,7 +77,7 @@ function MobileMenu({
     <div className="md:hidden">
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="p-2.5 rounded-sm text-foreground hover:text-primary transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-background min-h-[44px] min-w-[44px] flex items-center justify-center"
+        className="p-2.5 rounded-sm text-foreground hover:text-primary transition-colors duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background min-h-[44px] min-w-[44px] flex items-center justify-center"
         aria-label="Toggle menu"
         aria-expanded={isOpen}
       >
@@ -136,11 +136,10 @@ function MobileMenu({
                       key={item.name}
                       href={item.href}
                       onClick={() => setIsOpen(false)}
-                      className={`block px-4 py-3 text-sm font-medium tracking-wide transition-colors duration-200 rounded-sm min-h-[44px] flex items-center ${
-                        isActive
-                          ? "text-foreground"
-                          : "text-muted-foreground hover:text-foreground"
-                      }`}
+                      className={`block px-4 py-3 text-sm font-medium tracking-wide transition-colors duration-200 rounded-sm min-h-[44px] flex items-center ${isActive
+                        ? "text-foreground"
+                        : "text-muted-foreground hover:text-foreground"
+                        }`}
                       aria-current={isActive ? "page" : undefined}
                     >
                       {item.name}
