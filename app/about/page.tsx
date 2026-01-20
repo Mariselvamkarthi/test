@@ -40,7 +40,7 @@ export default function About() {
           <div className="text-base leading-relaxed text-muted-foreground space-y-4">
             <p>
               I started my career in engineering, which gave me a foundation in systematic
-              thinking and problem-solving. After eight years in UI/UX design, I've learned
+              thinking and problem-solving. After eight years in UI/UX design, I&apos;ve learned
               that the best interfaces emerge from understanding both the technical constraints
               and the human needs behind a product.
             </p>
@@ -73,7 +73,7 @@ export default function About() {
               errors.
             </p>
             <p>
-              I've worked on trading platforms, financial dashboards, document management
+              I&apos;ve worked on trading platforms, financial dashboards, document management
               systems, and enterprise tools. Each project has reinforced the importance of
               clear information architecture and thoughtful interaction design.
             </p>
@@ -119,7 +119,7 @@ export default function About() {
           <div className="text-base leading-relaxed text-muted-foreground space-y-4">
             <p>
               My design philosophy centers on clarity and usability. I believe interfaces should
-              be self-explanatory—users shouldn't need training or documentation to accomplish
+              be self-explanatory—users shouldn&apos;t need training or documentation to accomplish
               their goals. This means prioritizing clear information hierarchy, consistent
               patterns, and predictable interactions.
             </p>
@@ -131,7 +131,7 @@ export default function About() {
               between elements.
             </p>
             <p>
-              Usability isn't just about making things easy—it's about making things efficient
+              Usability isn&apos;t just about making things easy—it&apos;s about making things efficient
               and error-resistant. I design for the tasks users perform most frequently,
               optimizing for speed and accuracy. I also design to prevent mistakes, using
               confirmation steps, clear feedback, and constraints that guide users toward
@@ -160,9 +160,9 @@ export default function About() {
               with cross-functional teams, and build design systems that scale.
             </p>
             <p>
-              I'm comfortable with ambiguity and can help define problems when requirements
-              are unclear. I'm also comfortable with constraints and can find creative solutions
-              within technical and business limitations. Most importantly, I'm focused on
+              I&apos;m comfortable with ambiguity and can help define problems when requirements
+              are unclear. I&apos;m also comfortable with constraints and can find creative solutions
+              within technical and business limitations. Most importantly, I&apos;m focused on
               outcomes—I measure success by whether users can accomplish their goals efficiently
               and whether the product achieves its business objectives.
             </p>

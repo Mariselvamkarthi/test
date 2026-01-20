@@ -16,7 +16,7 @@ export default function Contact() {
         <div className="max-w-2xl">
           <h1 className="text-display-xl mb-4 sm:mb-6">Contact</h1>
           <p className="text-base sm:text-lg text-muted-foreground leading-relaxed">
-            I'm open to discussing new projects, design opportunities, or collaboration. 
+            I&apos;m open to discussing new projects, design opportunities, or collaboration.
             Reach out through the form below or connect via email or LinkedIn.
           </p>
         </div>
@@ -39,9 +39,9 @@ export default function Contact() {
           viewport={{ once: true, margin: "-100px" }}
           className="pt-8 border-t border-border"
         >
-          <h2 className="text-display-sm mb-4 sm:mb-6">Let's Connect</h2>
+          <h2 className="text-display-sm mb-4 sm:mb-6">Let&apos;s Connect</h2>
           <p className="text-base text-muted-foreground leading-relaxed mb-6 sm:mb-8">
-            I'm open to discussing design opportunities, collaborations, or project inquiries.
+            I&apos;m open to discussing design opportunities, collaborations, or project inquiries.
           </p>
           <div className="space-y-4">
             <a

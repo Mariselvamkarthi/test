@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { getAllCaseStudies } from "@/data/caseStudies";
+import { getAllCaseStudies } from "@/data/case-studies";
 import { staggerContainer, scrollReveal, arrowSlide } from "@/lib/motion";
 
 export default function Work() {

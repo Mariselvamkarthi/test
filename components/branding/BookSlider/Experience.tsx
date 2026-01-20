@@ -1,23 +1,17 @@
-"use client";
-
-import { Environment, Float, OrbitControls } from "@react-three/drei";
+import { Environment, OrbitControls } from "@react-three/drei";
 import { Book } from "./Book";
+import { PageData } from "./BookUI";
 
 interface ExperienceProps {
-    images: string[];
+    pages: PageData[];
 }
 
-export const Experience = ({ images }: ExperienceProps) => {
+export const Experience = ({ pages }: ExperienceProps) => {
     return (
         <>
-            <Float
-                rotation-x={-Math.PI / 4}
-                floatIntensity={1}
-                speed={2}
-                rotationIntensity={2}
-            >
-                <Book images={images} />
-            </Float>
+            <group rotation-x={-Math.PI / 4}>
+                <Book pages={pages} />
+            </group>
             <OrbitControls />
             <Environment preset="studio"></Environment>
             <directionalLight

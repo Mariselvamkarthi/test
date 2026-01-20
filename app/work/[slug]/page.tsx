@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
-import { CaseStudyTemplate } from "@/components/case-study/CaseStudyTemplate";
+import { CaseStudyTemplate } from "@/components/work/CaseStudyTemplate";
 import { notFound } from "next/navigation";
-import { getCaseStudyBySlug, getAllCaseStudySlugs } from "@/data/caseStudies";
+import { getCaseStudyBySlug, getAllCaseStudySlugs } from "@/data/case-studies";
 import { SITE_CONFIG } from "@/lib/constants";
 
 // Generate static params for all case studies

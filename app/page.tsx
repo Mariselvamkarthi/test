@@ -5,7 +5,7 @@ import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion
 import Image from "next/image";
 import { Button } from "@/components/ui/Button";
 import { CasePreviewCard } from "@/components/ui/CasePreviewCard";
-import { getAllCaseStudies } from "@/data/caseStudies";
+import { getAllCaseStudies } from "@/data/case-studies";
 import { staggerContainer, scrollReveal } from "@/lib/motion";
 
 export default function Home() {

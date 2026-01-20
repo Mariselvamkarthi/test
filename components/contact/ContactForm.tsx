@@ -129,7 +129,7 @@ export function ContactForm() {
           transition={motionConfig.standard}
           className="p-4 bg-muted text-foreground rounded-sm text-sm"
         >
-          Thank you for your message. I'll get back to you soon.
+          Thank you for your message. I&apos;ll get back to you soon.
         </motion.div>
       )}
 
