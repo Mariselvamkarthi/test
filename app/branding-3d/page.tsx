@@ -1,8 +1,7 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 
 // Dynamic import of the runtime component ensuring NO SSR
 const Flipbook3DRuntime = dynamic(
@@ -10,8 +9,8 @@ const Flipbook3DRuntime = dynamic(
     { ssr: false }
 );
 
-export default function Branding3DPage() {
-    const searchParams = useSearchParams();
+function Branding3DContent() {
+    const searchParams = new URLSearchParams(typeof window !== 'undefined' ? window.location.search : '');
     const title = searchParams.get("title") || "Brand Manual";
     const [mounted, setMounted] = useState(false);
 
@@ -25,5 +24,13 @@ export default function Branding3DPage() {
         <div className="w-full h-screen bg-transparent">
             <Flipbook3DRuntime title={title} />
         </div>
+    );
+}
+
+export default function Branding3DPage() {
+    return (
+        <Suspense fallback={<div>Loading...</div>}>
+            <Branding3DContent />
+        </Suspense>
     );
 }

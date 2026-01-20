@@ -1,9 +1,10 @@
 "use client";
 
 import { Canvas } from "@react-three/fiber";
-import { Suspense, useEffect } from "react";
+import { Suspense, useEffect, useMemo } from "react";
 import { Experience } from "./Experience";
 import { UI, pageAtom } from "./UI";
+import { PageData } from "./BookUI";
 import { useAtom } from "jotai";
 
 interface BookSliderProps {
@@ -17,6 +18,18 @@ export const BookSlider = ({ images }: BookSliderProps) => {
     useEffect(() => {
         setPage(0);
     }, [images, setPage]);
+
+    // Convert images to pages
+    const pages = useMemo((): PageData[] => {
+        const pagesData: PageData[] = [];
+        for (let i = 0; i < images.length; i += 2) {
+            pagesData.push({
+                front: images[i],
+                back: images[i + 1] || images[i],
+            });
+        }
+        return pagesData;
+    }, [images]);
 
     // Calculate total pages logic matches Book.tsx
     const totalPages = Math.ceil(images.length / 2);
@@ -34,7 +47,7 @@ export const BookSlider = ({ images }: BookSliderProps) => {
             >
                 <group position-y={0}>
                     <Suspense fallback={null}>
-                        <Experience images={images} />
+                        <Experience pages={pages} />
                     </Suspense>
                 </group>
             </Canvas>
