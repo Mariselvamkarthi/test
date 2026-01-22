@@ -20,7 +20,7 @@ export function BookCanvas({ pages }: BookCanvasProps) {
     if (!mounted) return null;
 
     return (
-        <div className="w-full h-full relative">
+        <div className="w-full h-full min-h-[400px] sm:min-h-[500px] lg:min-h-[600px] relative">
             <BookUI pages={pages} />
             <Loader />
             <Canvas shadows camera={{
