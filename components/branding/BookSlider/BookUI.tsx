@@ -57,10 +57,38 @@ export const BookUI = ({ pages }: BookUIProps) => {
     const [page, setPage] = useAtom(pageAtom);
 
     useEffect(() => {
-        const audio = new Audio("/audios/page-flip-01a.mp3");
-        audio.play().catch(() => {
-            // Audio play failed (user interaction needed)
-        });
+        // STRICT CLIENT GUARD: Only run in browser
+        if (typeof window === "undefined") return;
+
+        // Mobile-safe audio handling with proper error handling
+        try {
+            // Check if Audio API is available
+            if (typeof Audio === "undefined" || !Audio) {
+                return;
+            }
+
+            const audio = new Audio("/audios/page-flip-01a.mp3");
+            
+            // Set volume to reasonable level for mobile
+            audio.volume = 0.5;
+            
+            // Mobile-safe play with comprehensive error handling
+            const playPromise = audio.play();
+            
+            if (playPromise !== undefined) {
+                playPromise
+                    .catch((error) => {
+                        // Silently fail on mobile devices (autoplay restrictions)
+                        // This is expected behavior and not an error
+                        if (error.name !== "NotAllowedError" && error.name !== "NotSupportedError") {
+                            console.debug("Audio play failed:", error.name);
+                        }
+                    });
+            }
+        } catch (error) {
+            // Fail silently - audio is non-essential
+            console.debug("Audio initialization failed:", error);
+        }
     }, [page]);
 
     return (

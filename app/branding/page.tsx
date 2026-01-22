@@ -1,33 +1,115 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Component, ErrorInfo, ReactNode } from "react";
 import { brandingProjects } from "@/data/branding";
 import { BrandSelector, SystemInfo, BookSlider } from "@/components/branding";
 import { motion } from "framer-motion";
 
+// Error Boundary Component for BookSlider
+class BookSliderErrorBoundary extends Component<
+    { children: ReactNode; projectId: string },
+    { hasError: boolean }
+> {
+    constructor(props: { children: ReactNode; projectId: string }) {
+        super(props);
+        this.state = { hasError: false };
+    }
+
+    static getDerivedStateFromError() {
+        return { hasError: true };
+    }
+
+    componentDidCatch(error: Error, errorInfo: ErrorInfo) {
+        console.error("BookSlider error:", error, errorInfo);
+    }
+
+    render() {
+        if (this.state.hasError) {
+            return (
+                <div className="w-full h-full min-h-[400px] sm:min-h-[500px] lg:min-h-[600px] flex flex-col items-center justify-center p-8 text-center">
+                    <div className="space-y-4">
+                        <h2 className="text-xl font-semibold text-foreground">
+                            Unable to Load Viewer
+                        </h2>
+                        <p className="text-sm text-muted-foreground max-w-md">
+                            The 3D brandbook viewer could not be loaded on this device. Please try again or view on desktop.
+                        </p>
+                        <button
+                            onClick={() => this.setState({ hasError: false })}
+                            className="px-6 py-3 bg-primary text-primary-foreground rounded-lg font-medium hover:bg-primary/90 transition-colors duration-200"
+                        >
+                            Try Again
+                        </button>
+                    </div>
+                </div>
+            );
+        }
+
+        return this.props.children;
+    }
+}
+
+// Wrapper component with error boundary
+function BookSliderWrapper({ projectId }: { projectId: string }) {
+    return (
+        <BookSliderErrorBoundary projectId={projectId}>
+            <BookSlider projectId={projectId} />
+        </BookSliderErrorBoundary>
+    );
+}
+
 export default function BrandingPage() {
     const [activeProject, setActiveProject] = useState(brandingProjects[0]);
-    const [isMobile, setIsMobile] = useState(false);
+    // CRITICAL: Default to mobile-safe state (assume mobile until proven otherwise)
+    const [isMobile, setIsMobile] = useState(true);
     const [shouldLoadViewer, setShouldLoadViewer] = useState(false);
+    const [isClient, setIsClient] = useState(false);
 
     useEffect(() => {
-        // Detect mobile device
+        // STRICT CLIENT GUARD: Only run in browser
+        if (typeof window === "undefined") return;
+
+        setIsClient(true);
+
+        // Detect mobile device with proper guard
         const checkMobile = () => {
-            const isMobileDevice = window.innerWidth <= 768;
-            setIsMobile(isMobileDevice);
-            // Auto-load on desktop, require interaction on mobile
-            if (!isMobileDevice) {
-                setShouldLoadViewer(true);
+            try {
+                if (typeof window === "undefined" || !window.innerWidth) {
+                    // Default to mobile-safe if window unavailable
+                    setIsMobile(true);
+                    return;
+                }
+                const isMobileDevice = window.innerWidth <= 768;
+                setIsMobile(isMobileDevice);
+                // Auto-load on desktop, require interaction on mobile
+                if (!isMobileDevice) {
+                    setShouldLoadViewer(true);
+                }
+            } catch (error) {
+                // Fail-safe: assume mobile on error
+                console.error("Error detecting device:", error);
+                setIsMobile(true);
             }
         };
 
         checkMobile();
-        window.addEventListener("resize", checkMobile);
-        return () => window.removeEventListener("resize", checkMobile);
+        
+        // Guard event listener registration
+        if (typeof window !== "undefined" && window.addEventListener) {
+            window.addEventListener("resize", checkMobile);
+            return () => {
+                if (typeof window !== "undefined" && window.removeEventListener) {
+                    window.removeEventListener("resize", checkMobile);
+                }
+            };
+        }
     }, []);
 
     const handleLoadViewer = () => {
-        setShouldLoadViewer(true);
+        // Only allow loading after client-side hydration
+        if (typeof window !== "undefined") {
+            setShouldLoadViewer(true);
+        }
     };
 
     return (
@@ -55,7 +137,13 @@ export default function BrandingPage() {
                 </aside>
 
                 <main className="min-h-[400px] sm:min-h-[500px] lg:min-h-[600px] bg-neutral-100 dark:bg-neutral-900 rounded-xl border border-neutral-200 dark:border-neutral-800 relative order-1 lg:order-2 overflow-hidden">
-                    {!shouldLoadViewer && isMobile ? (
+                    {!isClient ? (
+                        // SSR/Initial render: Show safe placeholder
+                        <div className="w-full h-full min-h-[400px] sm:min-h-[500px] lg:min-h-[600px] flex items-center justify-center">
+                            <div className="text-muted-foreground animate-pulse">Loading...</div>
+                        </div>
+                    ) : !shouldLoadViewer && isMobile ? (
+                        // Mobile: Show lightweight placeholder until user interaction
                         <div className="w-full h-full min-h-[400px] sm:min-h-[500px] lg:min-h-[600px] flex flex-col items-center justify-center p-8 text-center">
                             <div className="space-y-4">
                                 <h2 className="text-xl font-semibold text-foreground">
@@ -73,7 +161,8 @@ export default function BrandingPage() {
                             </div>
                         </div>
                     ) : (
-                        <BookSlider key={activeProject.id} projectId={activeProject.id} />
+                        // Desktop or mobile after user interaction: Load viewer with error boundary
+                        <BookSliderWrapper key={activeProject.id} projectId={activeProject.id} />
                     )}
                 </main>
             </motion.div>
