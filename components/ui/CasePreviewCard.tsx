@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
@@ -14,6 +15,14 @@ interface CasePreviewCardProps {
   platform?: string;
 }
 
+// Map of slug to preview image filename
+const PREVIEW_IMAGE_MAP: Record<string, string> = {
+  "sensei-sigma": "Sensei App.png",
+  "belema-fintech": "Belema.png",
+  "thalappakatti-uae": "Thalappakatti.png",
+  "issuance-agent-portal": "Issuance Agent Portal.png",
+};
+
 export function CasePreviewCard({
   slug,
   title,
@@ -21,6 +30,17 @@ export function CasePreviewCard({
   domain,
   platform,
 }: CasePreviewCardProps) {
+  // Initialize image path immediately based on slug
+  const imageName = PREVIEW_IMAGE_MAP[slug];
+  const initialImagePath = imageName ? `/images/case-studies/${slug}/${imageName}` : null;
+  
+  const [imagePath] = useState<string | null>(initialImagePath);
+  const [imageError, setImageError] = useState(false);
+
+  const handleImageError = () => {
+    setImageError(true);
+  };
+
   return (
     <motion.div
       initial={scrollReveal.hidden}
@@ -41,37 +61,14 @@ export function CasePreviewCard({
         <div className="flex flex-col h-full">
           {/* Image */}
           <div className="relative overflow-hidden aspect-video">
-            {slug === "sensei-sigma" ? (
+            {imagePath && !imageError ? (
               <Image
-                src="/images/case-studies/sensei-sigma/Sensei App.png"
+                src={imagePath}
                 alt={`${title} - ${problem}`}
                 fill
                 className="object-cover group-hover:scale-[1.02] transition-transform duration-300"
                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-              />
-            ) : slug === "belema-fintech" ? (
-              <Image
-                src="/images/case-studies/belema-fintech/Belema.png"
-                alt={`${title} - ${problem}`}
-                fill
-                className="object-cover group-hover:scale-[1.02] transition-transform duration-300"
-                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-              />
-            ) : slug === "thalappakatti-uae" ? (
-              <Image
-                src="/images/case-studies/sensei-sigma/Thalappakatti.png"
-                alt={`${title} - ${problem}`}
-                fill
-                className="object-cover group-hover:scale-[1.02] transition-transform duration-300"
-                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-              />
-            ) : slug === "issuance-agent-portal" ? (
-              <Image
-                src="/images/case-studies/sensei-sigma/Issuance Agent Portal.png"
-                alt={`${title} - ${problem}`}
-                fill
-                className="object-cover group-hover:scale-[1.02] transition-transform duration-300"
-                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                onError={handleImageError}
               />
             ) : (
               <ImagePlaceholder />
