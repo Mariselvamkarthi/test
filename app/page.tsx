@@ -246,7 +246,7 @@ export default function Home() {
                   caseStudy.sections.find((s) => s.title === "Problem Statement" || s.title === "Overview")
                     ?.content || caseStudy.positioning;
 
-                return (
+  return (
                   <CasePreviewCard
                     key={caseStudy.slug}
                     slug={caseStudy.slug}
