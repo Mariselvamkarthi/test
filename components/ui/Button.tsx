@@ -12,6 +12,8 @@ interface ButtonProps {
   variant?: "primary" | "secondary";
   className?: string;
   ariaLabel?: string;
+  target?: string;
+  rel?: string;
 }
 
 export function Button({ 
@@ -20,6 +22,8 @@ export function Button({
   variant = "primary", 
   className = "",
   ariaLabel,
+  target,
+  rel,
 }: ButtonProps) {
   const baseStyles = "inline-flex items-center justify-center px-5 sm:px-6 py-3 text-sm font-medium tracking-wide rounded-sm transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-background min-h-[44px] min-w-[44px]";
   
@@ -39,6 +43,8 @@ export function Button({
         href={href}
         className={cn(baseStyles, variantStyles[variant], className)}
         aria-label={ariaLabel}
+        target={target}
+        rel={rel}
       >
         {children}
       </Link>

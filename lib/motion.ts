@@ -78,8 +78,14 @@ export const prefersReducedMotion = () => {
   return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 };
 
+// Type for animation variants
+export type AnimationVariants = {
+  hidden: Record<string, unknown>;
+  visible: Record<string, unknown>;
+};
+
 // Conditional animation variants (respects reduced motion)
-export const conditionalVariants = (variants: any) => {
+export const conditionalVariants = (variants: AnimationVariants): AnimationVariants => {
   if (prefersReducedMotion()) {
     return {
       hidden: { opacity: 0 },

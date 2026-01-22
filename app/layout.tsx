@@ -24,6 +24,11 @@ export const metadata: Metadata = {
   keywords: ["UI/UX Designer", "Product Designer", "Fintech Design", "B2B Design", "User Experience", "Interface Design"],
   authors: [{ name: SITE_CONFIG.author }],
   creator: SITE_CONFIG.author,
+  icons: {
+    icon: "/favicon.png",
+    shortcut: "/favicon.png",
+    apple: "/favicon.png",
+  },
   openGraph: {
     type: "website",
     locale: "en_US",

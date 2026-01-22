@@ -1,7 +1,8 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { ImagePlaceholder } from "@/components/ui/ImagePlaceholder";
+import Image from "next/image";
+import { usePathname } from "next/navigation";
 import { scrollReveal } from "@/lib/motion";
 
 interface CaseStudyHeaderProps {
@@ -23,6 +24,9 @@ export function CaseStudyHeader({
   positioning,
   meta,
 }: CaseStudyHeaderProps) {
+  const pathname = usePathname();
+  const slug = pathname.split("/").pop() || "";
+  const heroImagePath = `/images/case-studies/${slug}/hero-image.png`;
   return (
     <motion.header
       initial={scrollReveal.hidden}
@@ -48,13 +52,18 @@ export function CaseStudyHeader({
           {positioning}
         </p>
 
-        {/* Optional Hero Image Placeholder */}
+        {/* Hero Image */}
         <div className="mb-10">
-          <ImagePlaceholder
-            label="Hero Preview"
-            aspectRatio="16:9"
-            size="large"
-          />
+          <div className="relative w-full aspect-video rounded-sm overflow-hidden">
+            <Image
+              src={heroImagePath}
+              alt={`${title}${subtitle ? ` - ${subtitle}` : ""}`}
+              fill
+              className="object-cover"
+              priority
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 90vw, 896px"
+            />
+          </div>
         </div>
 
         {/* Meta Information */}

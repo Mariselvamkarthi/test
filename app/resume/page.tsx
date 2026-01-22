@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/Button";
-import { resumeSummary, resumeExperiences } from "@/data/resumeContent";
+import { resumeSummary } from "@/data/resumeContent";
 import { scrollReveal } from "@/lib/motion";
 
 // Using resume content from data file
@@ -55,7 +55,7 @@ export default function Resume() {
               {resumeSummary}
             </p>
             <div className="print:hidden">
-              <Button href="/resume.pdf" variant="primary">
+              <Button href="/resume.pdf" variant="primary" target="_blank" rel="noopener noreferrer">
                 Download Resume
               </Button>
             </div>
@@ -84,47 +84,6 @@ export default function Resume() {
                   ))}
                 </ul>
               </div>
-            ))}
-          </div>
-        </motion.section>
-
-        {/* Experience Timeline */}
-        <motion.section
-          initial={scrollReveal.hidden}
-          whileInView={scrollReveal.visible}
-          viewport={{ once: true, margin: "-100px" }}
-          className="print:break-inside-avoid"
-        >
-          <h2 className="text-display-lg mb-8 print:mb-4 print:text-2xl">Experience</h2>
-          <div className="space-y-8 print:space-y-4">
-            {resumeExperiences.map((exp, index) => (
-              <motion.div
-                key={index}
-                initial={scrollReveal.hidden}
-                whileInView={scrollReveal.visible}
-                viewport={{ once: true, margin: "-50px" }}
-                className="border-l-2 border-border pl-6 sm:pl-8 print:pl-4 print:border-l"
-              >
-                <div className="mb-2">
-                  <span className="text-sm font-medium text-muted-foreground print:text-xs">
-                    {exp.period}
-                  </span>
-                </div>
-                <h3 className="text-display-sm mb-1 print:text-lg">
-                  {exp.title}
-                </h3>
-                <p className="text-muted-foreground mb-3 print:text-sm print:mb-2">
-                  {exp.company}
-                </p>
-                <ul className="space-y-2 text-muted-foreground leading-relaxed print:text-sm">
-                  {exp.achievements.map((achievement, i) => (
-                    <li key={i} className="flex items-start">
-                      <span className="text-muted-foreground/60 mr-3 mt-1.5">•</span>
-                      <span>{achievement}</span>
-                    </li>
-                  ))}
-                </ul>
-              </motion.div>
             ))}
           </div>
         </motion.section>

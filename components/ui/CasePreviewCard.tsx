@@ -51,7 +51,7 @@ export function CasePreviewCard({
               />
             ) : slug === "belema-fintech" ? (
               <Image
-                src="/images/case-studies/sensei-sigma/Belema.png"
+                src="/images/case-studies/belema-fintech/Belema.png"
                 alt={`${title} - ${problem}`}
                 fill
                 className="object-cover group-hover:scale-[1.02] transition-transform duration-300"
@@ -65,13 +65,16 @@ export function CasePreviewCard({
                 className="object-cover group-hover:scale-[1.02] transition-transform duration-300"
                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
               />
-            ) : (
-              <ImagePlaceholder
-                label="UI Preview"
-                aspectRatio="16:9"
-                size="medium"
-                className="group-hover:scale-[1.02] transition-transform duration-300"
+            ) : slug === "issuance-agent-portal" ? (
+              <Image
+                src="/images/case-studies/sensei-sigma/Issuance Agent Portal.png"
+                alt={`${title} - ${problem}`}
+                fill
+                className="object-cover group-hover:scale-[1.02] transition-transform duration-300"
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
               />
+            ) : (
+              <ImagePlaceholder />
             )}
             {platform && (
               <div className="absolute top-3 right-3 z-10">

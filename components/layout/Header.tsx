@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { NAVIGATION, type NavigationItem } from "@/lib/constants";
@@ -16,9 +17,17 @@ export function Header() {
           <div className="flex items-center">
             <Link
               href="/"
-              className="text-base sm:text-lg font-semibold tracking-tight text-foreground hover:text-primary transition-colors duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background rounded-sm min-h-[44px] min-w-[44px] flex items-center"
+              className="flex items-center hover:opacity-80 transition-opacity duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background rounded-sm min-h-[44px] min-w-[44px]"
+              aria-label="Mariselvam - Home"
             >
-              Mariselvam
+              <Image
+                src="/logo.svg"
+                alt="Mariselvam Logo"
+                width={246}
+                height={40}
+                className="h-5 sm:h-6 w-auto"
+                priority
+              />
             </Link>
           </div>
 

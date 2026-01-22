@@ -6,13 +6,13 @@ This directory contains the data-driven case study system for the portfolio.
 
 ```
 data/
-├── caseStudies.ts              # Main data file with all case studies
+├── case-studies.ts             # Main data file with all case studies
 └── case-studies/               # Optional: Individual case study files (for complex content)
 ```
 
 ## Adding a New Case Study
 
-Simply add a new object to the `caseStudies` array in `data/caseStudies.ts`:
+Simply add a new object to the `caseStudies` array in `data/case-studies.ts`:
 
 ### Example
 

@@ -1,10 +1,14 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
+import Image from "next/image";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { ReactNode } from "react";
 import { CaseStudyHeader } from "./CaseStudyHeader";
-import { ImagePlaceholder } from "@/components/ui/ImagePlaceholder";
-import { scrollReveal } from "@/lib/motion";
+import { scrollReveal, arrowSlide } from "@/lib/motion";
+import { getAllCaseStudies } from "@/data/case-studies";
 
 interface CaseStudySection {
   title: string;
@@ -26,6 +30,71 @@ interface CaseStudyTemplateProps {
   outcome?: string;
 }
 
+// Component that only shows image if it exists (returns null on error)
+function CaseStudyImage({
+  slug,
+  imageName,
+  alt,
+  size = "medium",
+}: {
+  slug: string;
+  imageName: string;
+  alt: string;
+  size?: "medium" | "large";
+}) {
+  const [imageExists, setImageExists] = useState<boolean | null>(null);
+  
+  // Try common image extensions
+  const imageExtensions = [".png", ".jpg", ".jpeg", ".webp"];
+  const [currentPath, setCurrentPath] = useState<string | null>(null);
+
+  useEffect(() => {
+    // Check if image exists by trying to load it
+    const checkImage = async () => {
+      for (const ext of imageExtensions) {
+        const path = `/images/case-studies/${slug}/${imageName}${ext}`;
+        const img = new window.Image();
+        
+        const loadPromise = new Promise<boolean>((resolve) => {
+          img.onload = () => resolve(true);
+          img.onerror = () => resolve(false);
+          img.src = path;
+        });
+
+        const exists = await loadPromise;
+        if (exists) {
+          setCurrentPath(path);
+          setImageExists(true);
+          return;
+        }
+      }
+      setImageExists(false);
+    };
+
+    checkImage();
+  }, [slug, imageName]);
+
+  // Don't render anything while checking or if image doesn't exist
+  if (imageExists === false || imageExists === null || !currentPath) {
+    return null;
+  }
+
+  const aspectClass = "aspect-video";
+  const heightClass = size === "large" ? "min-h-[400px]" : "min-h-[300px]";
+
+  return (
+    <div className={`mt-8 relative w-full ${aspectClass} ${heightClass} rounded-sm overflow-hidden`}>
+      <Image
+        src={currentPath}
+        alt={alt}
+        fill
+        className="object-cover"
+        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 90vw, 896px"
+      />
+    </div>
+  );
+}
+
 export function CaseStudyTemplate({
   title,
   subtitle,
@@ -34,6 +103,8 @@ export function CaseStudyTemplate({
   sections,
   outcome,
 }: CaseStudyTemplateProps) {
+  const pathname = usePathname();
+  const slug = pathname.split("/").pop() || "";
   return (
     <article className="container mx-auto px-4 sm:px-6 md:px-8 lg:px-12 py-12 sm:py-16 md:py-24">
       {/* Header */}
@@ -63,33 +134,21 @@ export function CaseStudyTemplate({
               )}
             </div>
             
-            {/* Conditional Image Placeholders */}
+            {/* Conditional Images - Only show if image exists */}
             {section.title === "Constraints & Considerations" && (
-              <div className="mt-8">
-                <ImagePlaceholder
-                  label="System Constraints Diagram"
-                  aspectRatio="16:9"
-                  size="medium"
-                />
-              </div>
+              <CaseStudyImage
+                slug={slug}
+                imageName="constraints-diagram"
+                alt="System Constraints Diagram"
+              />
             )}
             {section.title === "UX Solution" && (
-              <div className="mt-8">
-                <ImagePlaceholder
-                  label="Key Screen / Flow Example"
-                  aspectRatio="16:9"
-                  size="large"
-                />
-              </div>
-            )}
-            {section.title === "Before vs After (UX Perspective)" && (
-              <div className="mt-8">
-                <ImagePlaceholder
-                  aspectRatio="split"
-                  beforeLabel="Before"
-                  afterLabel="After"
-                />
-              </div>
+              <CaseStudyImage
+                slug={slug}
+                imageName="solution-example"
+                alt="Key Screen / Flow Example"
+                size="large"
+              />
             )}
           </motion.section>
         ))}
@@ -109,7 +168,117 @@ export function CaseStudyTemplate({
           </div>
         </motion.section>
       )}
+
+      {/* Navigation Section */}
+      <CaseStudyNavigation currentSlug={slug} />
     </article>
   );
 }
 
+// Navigation component for case study pages
+function CaseStudyNavigation({ currentSlug }: { currentSlug: string }) {
+  const allCaseStudies = getAllCaseStudies();
+  const currentIndex = allCaseStudies.findIndex((study) => study.slug === currentSlug);
+  const nextCaseStudy = currentIndex >= 0 && currentIndex < allCaseStudies.length - 1 
+    ? allCaseStudies[currentIndex + 1] 
+    : null;
+  const remainingCaseStudies = allCaseStudies.filter((_, index) => index !== currentIndex);
+
+  if (remainingCaseStudies.length === 0) {
+    return null;
+  }
+
+  return (
+    <motion.section
+      initial={scrollReveal.hidden}
+      whileInView={scrollReveal.visible}
+      viewport={{ once: true, margin: "-100px" }}
+      className="mt-24 sm:mt-32 pt-16 sm:pt-20 border-t border-border"
+    >
+      <div className="max-w-4xl space-y-12">
+        {/* Next Project */}
+        {nextCaseStudy && (
+          <div>
+            <p className="text-sm font-medium text-muted-foreground uppercase tracking-wider mb-6">
+              Next Project
+            </p>
+            <motion.div
+              initial="rest"
+              whileHover="hover"
+              variants={arrowSlide}
+            >
+              <Link
+                href={`/work/${nextCaseStudy.slug}`}
+                className="group block"
+              >
+                <h2 className="text-display-xl mb-3 group-hover:text-primary transition-colors duration-200">
+                  {nextCaseStudy.title}
+                </h2>
+                {nextCaseStudy.subtitle && (
+                  <p className="text-lg text-muted-foreground mb-4">
+                    {nextCaseStudy.subtitle}
+                  </p>
+                )}
+                <p className="text-base text-muted-foreground leading-relaxed mb-4">
+                  {nextCaseStudy.positioning}
+                </p>
+                <span className="text-sm font-medium text-foreground group-hover:text-primary transition-colors duration-200 inline-flex items-center gap-1">
+                  View Case Study
+                  <span className="inline-block">→</span>
+                </span>
+              </Link>
+            </motion.div>
+          </div>
+        )}
+
+        {/* All Remaining Projects */}
+        {remainingCaseStudies.length > 0 && (
+          <div>
+            <h3 className="text-display-lg mb-8">
+              {nextCaseStudy ? "More Projects" : "All Projects"}
+            </h3>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8">
+              {remainingCaseStudies
+                .filter((study) => !nextCaseStudy || study.slug !== nextCaseStudy.slug)
+                .map((study) => (
+                  <motion.div
+                    key={study.slug}
+                    initial={scrollReveal.hidden}
+                    whileInView={scrollReveal.visible}
+                    viewport={{ once: true, margin: "-50px" }}
+                    className="group"
+                  >
+                    <Link
+                      href={`/work/${study.slug}`}
+                      className="block py-4 border-b border-border hover:border-foreground/20 transition-colors duration-200"
+                    >
+                      <h4 className="text-display-sm mb-2 group-hover:text-primary transition-colors duration-200">
+                        {study.title}
+                      </h4>
+                      {study.subtitle && (
+                        <p className="text-sm text-muted-foreground mb-2">
+                          {study.subtitle}
+                        </p>
+                      )}
+                      <p className="text-sm text-muted-foreground leading-relaxed mb-3">
+                        {study.positioning}
+                      </p>
+                      <motion.span
+                        className="text-sm font-medium text-foreground group-hover:text-primary transition-colors duration-200 inline-flex items-center gap-1"
+                        initial="rest"
+                        whileHover="hover"
+                        variants={arrowSlide}
+                      >
+                        View Case Study
+                        <span className="inline-block">→</span>
+                      </motion.span>
+                    </Link>
+                  </motion.div>
+                ))}
+            </div>
+          </div>
+        )}
+      </div>
+    </motion.section>
+  );
+}

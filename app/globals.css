@@ -56,10 +56,6 @@
   }
   
   h1 {
-    letter-spacing: -0.03em;
-  }
-  
-  h1 {
     @apply text-display-2xl;
     letter-spacing: -0.03em;
   }

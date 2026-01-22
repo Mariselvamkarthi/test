@@ -53,6 +53,9 @@ export default function Home() {
     caseStudies = getAllCaseStudies();
   } catch (error) {
     console.error("Error loading case studies:", error);
+    if (error instanceof Error) {
+      console.error("Error details:", error.message, error.stack);
+    }
     caseStudies = [];
   }
 
@@ -102,7 +105,7 @@ export default function Home() {
               <Button href="/work" variant="primary">
                 View Work
               </Button>
-              <Button href="/resume" variant="secondary">
+              <Button href="/resume" variant="secondary" target="_blank" rel="noopener noreferrer">
                 Download Resume
               </Button>
             </motion.div>
